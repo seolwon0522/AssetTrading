@@ -1,12 +1,15 @@
 package com.example.AssetTrading.Entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-
+@Getter
+@Setter
 @Entity
-@Table(name="SellProduct")
+@Table(name="sellProducts")
 public class SellProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +30,5 @@ public class SellProduct {
     Long sellerId;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
-    
+
 }

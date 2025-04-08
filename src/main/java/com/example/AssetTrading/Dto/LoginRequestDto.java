@@ -6,10 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class UserResponseDto {
-    String email;
-    String companyName;
-    boolean approved;
-
-
+public class LoginRequestDto {
+    private String email;
+    private String password;
 }

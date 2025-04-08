@@ -1,14 +1,15 @@
 package com.example.AssetTrading.Entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table
+@Table(name = "users")
 @Getter
 @Setter
-
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +19,7 @@ public class User {
     String password;
     String businessNumber;
     String companyName;
-    String adress;
+    String address;
     String industry;
     String phoneNumber;
     String description;
