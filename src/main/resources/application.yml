@@ -1,0 +1,26 @@
+spring:
+  application:
+    name:AssetTrading
+
+  datasource:
+    driver-class-name:com.mysql.jbdc.Driver
+    url:jdbc:mysql://to-on.kr:3306/hanyang2
+  username: to_on_admin
+  password: BgCt9kuMws9jOivFj05UcEYpauecNa076H0oontnNrUGgG13lr
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  mybatis:
+    mapper-locations: mapper/*.xml
+
+  server:
+    port: 3306
+

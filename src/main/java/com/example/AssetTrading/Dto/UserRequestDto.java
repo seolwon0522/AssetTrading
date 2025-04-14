@@ -1,33 +1,31 @@
 package com.example.AssetTrading.Dto;
 
 import com.example.AssetTrading.Entity.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserRequestDto {
-    String email;
-    String password;
-    String businessNumber;
-    String companyName;
-    String address;
-    String industry;
-    String phoneNumber;
-    String description;
-    public User toEntity(){
+    private String user_id;
+    private String user_pw;
+    private String business_num;
+    private String company_name;
+    private String company_address;
+    private String company_industry;
+    private String company_tell;
+
+    public User toEntity() {
         return User.builder()
-                .email(this.email)
-                .password(this.password)
-                .businessNumber(this.businessNumber)
-                .companyName(this.companyName)
-                .address(this.address)
-                .industry(this.industry)
-                .phoneNumber(this.phoneNumber)
-                .description(this.description)
+                .user_id(this.user_id)
+                .user_pw(this.user_pw)
+                .business_num(this.business_num)
+                .company_name(this.company_name)
+                .company_address(this.company_address)
+                .company_industry(this.company_industry)
+                .company_tell(this.company_tell)
                 .build();
-
     }
-
 }

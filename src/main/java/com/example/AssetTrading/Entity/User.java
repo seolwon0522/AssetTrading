@@ -1,10 +1,10 @@
 package com.example.AssetTrading.Entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 @Getter
@@ -15,14 +15,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     Long id;
-    String email;
-    String password;
-    String businessNumber;
-    String companyName;
-    String address;
-    String industry;
-    String phoneNumber;
+    String user_id; //email
+    String user_pw;
+    String business_num;
+    String company_name;
+    String company_address;
+    String company_industry;
+    String company_tell;
     String description;
-    boolean approved;
-
+    boolean join_approved;
 }

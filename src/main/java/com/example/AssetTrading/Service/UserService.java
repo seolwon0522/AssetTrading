@@ -1,39 +1,51 @@
 package com.example.AssetTrading.Service;
 
+import com.example.AssetTrading.Dto.LoginRequestDto;
 import com.example.AssetTrading.Dto.UserRequestDto;
+import com.example.AssetTrading.Dto.UserResponseDto;
 import com.example.AssetTrading.Entity.User;
 import com.example.AssetTrading.Repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
     private final UserRepository userRepository;
+    private static final String LOGIN_USER = "LOGIN_USER";
 
-    //회원가입 로직 ( 중복 아이디(이메일) X )
-    public void register(UserRequestDto userRequestDto) {
-        if(userRepository.existsByEmail(userRequestDto.getEmail())){
-            throw new IllegalArgumentException("사용중인이메일");
+    public UserResponseDto register(UserRequestDto userrequestDto) {
+        if (userRepository.existsByEmail(userrequestDto.getUser_id())) {
+            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
         }
+
+        User savedUser = userRepository.save(userrequestDto.toEntity());
+        return UserResponseDto.fromEntity(savedUser);
     }
 
-    //로그인 ( 없는 id , 비밀번호 불일치 예외처리 )
-    public User login(String email, String password) {
-        User user = userRepository.findByEmail(email) //findby는 optional<user> 리턴
-                .orElseThrow(()->new IllegalArgumentException("가입된 이메일 없음"));
+    public UserResponseDto getNicknameById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new IllegalArgumentException("사용자를 찾을 수없습니다"));
+        return UserResponseDto.fromEntity(user);
+    }
 
-        if(!user.getPassword().equals(password)){
-        throw new IllegalArgumentException("비밀번호 불일치");
+    public void login(LoginRequestDto loginDto, HttpSession session) {
+        User user = userRepository.findByEmail(loginDto.getEmail())
+                .orElseThrow(()-> new IllegalArgumentException("이메일이 존재하지 않습니다"));
+
+        if (!user.getUser_pw().equals(loginDto.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
         }
-        return user;
+        session.setAttribute(LOGIN_USER, UserResponseDto.fromEntity(user)); //로그인 성공시 세션에저장
+
     }
 
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public void logout(HttpSession session) {
+        session.removeAttribute(LOGIN_USER);
     }
-
-
 }
