@@ -9,23 +9,23 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserRequestDto {
-    private String user_id;
-    private String user_pw;
-    private String business_num;
-    private String company_name;
-    private String company_address;
-    private String company_industry;
-    private String company_tell;
+    private String userId;
+    private String userPw;
+    private String businessNum;
+    private String companyName;
+    private String companyAddress;
+    private String companyIndustry;
+    private String companyTell;
 
     public User toEntity() {
         return User.builder()
-                .user_id(this.user_id)
-                .user_pw(this.user_pw)
-                .business_num(this.business_num)
-                .company_name(this.company_name)
-                .company_address(this.company_address)
-                .company_industry(this.company_industry)
-                .company_tell(this.company_tell)
+                .userId(this.userId)
+                .userPw(this.userPw)
+                .businessNum(this.businessNum)
+                .companyName(this.companyName)
+                .companyAddress(this.companyAddress)
+                .companyIndustry(this.companyIndustry)
+                .companyTell(this.companyTell)
                 .build();
     }
 }

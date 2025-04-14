@@ -11,17 +11,34 @@ import lombok.*;
 @Setter
 @Builder
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    Long id;
-    String user_id; //email
-    String user_pw;
-    String business_num;
-    String company_name;
-    String company_address;
-    String company_industry;
-    String company_tell;
-    String description;
-    boolean join_approved;
+    @Column(name = "user_id")
+    private String userId;
+
+    @Column(name = "user_pw")
+    private String userPw;
+
+    @Column(name = "business_num")
+    private String businessNum;
+
+    @Column(name = "company_name")
+    private String companyName;
+
+    @Column(name = "company_address")
+    private String companyAddress;
+
+    @Column(name = "company_industry")
+    private String companyIndustry;
+
+    @Column(name = "company_tell")
+    private String companyTell;
+
+    private String description;
+
+    @Column(name = "join_approved")
+    private boolean joinApproved;
 }
