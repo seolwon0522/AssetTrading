@@ -3,16 +3,11 @@ package com.example.AssetTrading.Controller;
 import com.example.AssetTrading.Dto.LoginRequestDto;
 import com.example.AssetTrading.Dto.UserRequestDto;
 import com.example.AssetTrading.Dto.UserResponseDto;
-import com.example.AssetTrading.Entity.User;
-import com.example.AssetTrading.Repository.UserRepository;
 import com.example.AssetTrading.Service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,14 +17,12 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> register(@RequestBody UserRequestDto userRequestDto) {
-        UserResponseDto userResponseDto = userService.register(userRequestDto);
-        return ResponseEntity.ok(userResponseDto);
+        return ResponseEntity.ok(userService.register(userRequestDto));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
-        UserResponseDto userResponseDto = userService.getNicknameById(id);
-        return ResponseEntity.ok(userResponseDto);
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @PostMapping("/login")
@@ -43,8 +36,4 @@ public class UserController {
         userService.logout(session);
         return ResponseEntity.ok("로그아웃 성공");
     }
-
-
-
-
 }

@@ -19,13 +19,13 @@ public class UserRequestDto {
 
     public User toEntity() {
         return User.builder()
-                .userId(this.userId)
-                .userPw(this.userPw)
-                .businessNum(this.businessNum)
-                .companyName(this.companyName)
-                .companyAddress(this.companyAddress)
-                .companyIndustry(this.companyIndustry)
-                .companyTell(this.companyTell)
+                .userId(userId)
+                .userPw(userPw)
+                .businessNum(businessNum)
+                .companyName(companyName)
+                .companyAddress(companyAddress)
+                .companyIndustry(companyIndustry)
+                .companyTell(companyTell)
                 .build();
     }
 }
