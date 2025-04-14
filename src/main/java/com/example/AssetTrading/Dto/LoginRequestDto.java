@@ -1,12 +1,13 @@
 package com.example.AssetTrading.Dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class LoginRequestDto {
-    private String email;
-    private String password;
+    private String userId;
+    private String userPw;
 }
