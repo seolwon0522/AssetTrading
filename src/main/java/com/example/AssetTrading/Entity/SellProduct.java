@@ -1,34 +1,47 @@
 package com.example.AssetTrading.Entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import java.time.LocalDate;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+@Entity
+@Table(name = "products")
 @Getter
 @Setter
-@Entity
-@Table(name="sellProducts")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SellProduct {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String title;
-    String description;
-    String imageUrl;
-    Integer price;
-    Integer quantity;
-    Date availableDate;
-    Boolean shippingAvailable;
-    enum SellProductStatus {
-        Approved,
-        Requested,
-        Completed,
-        Canceled
-    }
-    Long sellerId;
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
+    private Long id;
 
+    @Column(name = "product_title", columnDefinition = "TEXT", nullable = false)
+    private String productTitle;
+
+    @Column(name = "product_desc", length = 255)
+    private String productDesc;
+
+    @Column(name = "product_img", columnDefinition = "TEXT")
+    private String productImg;
+
+    @Column(name = "product_price", nullable = false)
+    private Integer productPrice;
+
+    @Column(name = "product_quantity", nullable = false)
+    private Integer productQuantity;
+
+    @Column(name = "product_create_date", length = 50)
+    private String productCreateDate;
+
+    @Column(name = "product_avail_date")
+    private LocalDate productAvailDate;
+
+    @Column(name = "seller_user_id", length = 100)
+    private String sellerUserId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "product_status", length = 30)
+    private ProductStatus productStatus;
 }
