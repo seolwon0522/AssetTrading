@@ -1,29 +1,38 @@
 package com.example.AssetTrading.Entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
-@Table(name="transactions")
+@Table(name = "transaction")
 public class Transaction {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long transaction_idx;
 
-    Long id;
-    Long productId;
-    Long buyerId;
-    Long sellerId;
+    private int product_idx;
 
-    //satatus enum 이게맞나
-    enum TransactionStatus {
-        Approved,
+    private String buyer_user_id;
+
+    private String seller_user_id;
+
+    @Enumerated(EnumType.STRING)
+    private TransactionState transaction_state;
+
+    private LocalDateTime completed_date;
+
+    public enum TransactionState {
         Requested,
+        Approved,
         Completed,
         Canceled
     }
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
 }
