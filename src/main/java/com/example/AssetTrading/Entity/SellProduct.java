@@ -47,4 +47,7 @@ public class SellProduct {
     @Enumerated(EnumType.STRING)
     @Column(name = "product_status")
     private ProductStatus productStatus;
+
+
+
 }

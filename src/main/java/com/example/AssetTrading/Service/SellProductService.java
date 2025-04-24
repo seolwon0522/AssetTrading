@@ -31,11 +31,11 @@ public class SellProductService {
 
     public SellProductResponseDto createSellProductWithSession(SellProductRequestDto dto, HttpSession session) {
         Object userObj = session.getAttribute("LOGIN_USER");
-        if (!(userObj instanceof UserResponseDto)) {
+
+        if (!(userObj instanceof UserResponseDto userDto)) {
             throw new IllegalStateException("로그인 정보가 없습니다.");
         }
 
-        UserResponseDto userDto = (UserResponseDto) userObj;
 
         // 실제 User 엔티티를 조회
         User user = userRepository.findByUserId(userDto.getUserId())

@@ -16,4 +16,4 @@ spring:
         physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
 
 server:
-  port: 8080  # 서버 포트는 이걸로! (DB 포트와 헷갈리지 마)
+  port: 8080
