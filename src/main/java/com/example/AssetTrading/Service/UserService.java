@@ -10,17 +10,29 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-@Transactional
+@Service                       /// Service 부분
+@RequiredArgsConstructor       /// private final 로 선언 받은 필드 값들 생성자 생략 가능
+@Transactional                 /// 값들이 DB로 넘어가는데에 있어서 문제 발생 시 값이 안 넘어감
 public class UserService {
-    private final UserRepository userRepository;
-    private static final String LOGIN_USER = "LOGIN_USER";
+    private final UserRepository userRepository;               /// userRepository user의 임시저장소를 값 초기화
+    private static final String LOGIN_USER = "LOGIN_USER";     /// ? 흠
 
-    public UserResponseDto register(UserRequestDto userRequestDto) {
+    // 회원가입 관련 메소드
+    public UserResponseDto register(UserRequestDto userRequestDto) {  ///  회원가입 당시에 userRequestDto 타입으로 반환
+
+        // 만약, userRequestDto 안의 UserId 를 가져왔을 때,
+        // 그 값이 null 값이거나? 공백이라면?
+        // 예외 객체 생성 -> throw new IllegalArgumentException("이메일을 입력하세요");
         if (userRequestDto.getUserId() == null || userRequestDto.getUserId().isBlank()) {
             throw new IllegalArgumentException("이메일을 입력하세요");
         }
+
+        // 만약, userRepository 안의 있는 UserId를 가져왔을 때,
+        // 그 userId가 이미 DB에 존재한다면,
+        // 예외 객체 생성 -> throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
+        // 그 userId가 DB에 존재하지 않는다면,
+        // 회원가입 당시 입력한 값인 userRequestDto json -> dto의 toEntity java 객체 형태로 저장하여 그 값을 savedUser 넣음
+        // savedUser를 UserResponseDto의 fromEntity를 통해 회원의 정보를
         if (userRepository.existsByUserId(userRequestDto.getUserId())) {
             throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
         }
@@ -28,7 +40,13 @@ public class UserService {
         return UserResponseDto.fromEntity(savedUser);
     }
 
-    public UserResponseDto getUserById(Long id) {
+    // 사용자 찾는 메소드
+    public UserResponseDto getUserById(Long id) { ///  id 키 값을 받음
+        // userRepository 안에 입력받은 id 값을 찾아서 user 로 둘 것
+        // orElseThrow 그래서 () <- 값이 없다면?
+        // 예외 객체 생성 -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
+        // 값이 있다고 한다면?
+        // 클라이언트 안에 user 값을 반환.
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
         return UserResponseDto.fromEntity(user);
