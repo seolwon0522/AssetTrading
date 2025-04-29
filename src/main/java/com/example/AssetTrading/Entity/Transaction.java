@@ -18,9 +18,10 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transaction_idx;
 
-    private int product_idx;
-
-    private Long id;
+    // idx 하라며 어떻게 짜?
+    private Long product_idx;
+    private Long buyer_idx;
+    private Long seller_idx;
 
     // ManyToOne은 FetchType.LAZY 쓰면 좋다는데 일단 보류
 
@@ -34,7 +35,7 @@ public class Transaction {
     @JoinColumn(name = "seller_user_id")
     private User seller;
 
-    // 거래할 상품
+    // 거래 할 상품
     @ManyToOne
     @JoinColumn(name = "SellProduct")
     private SellProduct sellProduct;
@@ -55,13 +56,4 @@ public class Transaction {
     // 거래 완료 시간
     private LocalDateTime finishTime;
 
-    @Builder
-    public Transaction(User buyerId, User sellerId, SellProduct sellProduct, TransactionStatus status, LocalDateTime startTime) {
-        this.buyer = buyerId;
-        this.seller = sellerId;
-        this.sellProduct = sellProduct;
-        this.status = status;
-        this.startTime = startTime;
-
-    }
 }
