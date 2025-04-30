@@ -41,14 +41,10 @@ public class UserService {
     }
 
     // 사용자 찾는 메소드
-    public UserResponseDto getUserById(Long id) { ///  id 키 값을 받음
-        // userRepository 안에 입력받은 id 값을 찾아서 user 로 둘 것
-        // orElseThrow 그래서 () <- 값이 없다면?
-        // 예외 객체 생성 -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
-        // 값이 있다고 한다면?
-        // 클라이언트 안에 user 값을 반환.
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
+    public UserResponseDto getUserByUserIdx(Long user_idx) { ///  user_idx 키 값을 받음
+        // userRepository 안에 입력받은 user_idx 값을 찾아서 user 로 둘 것
+        User user = userRepository.findById(user_idx)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. user_idx=" + user_idx));
         return UserResponseDto.fromEntity(user);
     }
 

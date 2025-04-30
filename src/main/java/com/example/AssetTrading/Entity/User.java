@@ -9,24 +9,29 @@ import lombok.*;
 @Table(name = "users")
 @Getter
 @Setter
+@Data
 @Builder
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_idx")
+    private Long user_idx;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id") 
     private String userId;
 
     @Column(name = "user_pw")
     private String userPw;
 
+    @Column(name = "user_name")
+    private String userName;
+
     @Column(name = "business_num")
     private String businessNum;
 
     @Column(name = "company_name")
-    private String companyName;
+    private String companyName; 
 
     @Column(name = "company_address")
     private String companyAddress;
@@ -34,9 +39,10 @@ public class User {
     @Column(name = "company_industry")
     private String companyIndustry;
 
-    @Column(name = "company_tell")
+    @Column(name = "company_tel")
     private String companyTell;
 
+    @Transient
     private String description;
 
     @Column(name = "join_approved")

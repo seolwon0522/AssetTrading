@@ -19,7 +19,7 @@ public class SellProductRequestDto {
     private Integer productQuantity;
     private String productCreateDate;
     private LocalDate productAvailDate;
-    private String sellerUserId;
+    private Long sellerUserIdx;
     private String productStatus; // 여기는 그대로 String
 
     public SellProduct toEntity() {
@@ -31,7 +31,7 @@ public class SellProductRequestDto {
                 .productQuantity(this.productQuantity)
                 .productCreateDate(this.productCreateDate)
                 .productAvailDate(this.productAvailDate)
-                .sellerUserId(this.sellerUserId)
+                .sellerUserIdx(this.sellerUserIdx)
                 .productStatus(ProductStatus.valueOf(this.productStatus)) // 이 부분에서 변환
                 .build();
     }

@@ -34,17 +34,17 @@ public class SellProductController {
         return ResponseEntity.ok(products);
     }
 
-    // ID로 특정 판매 상vna정보를 조회
-    @GetMapping("/seller/{sellerUserId}")
-    public ResponseEntity<SellProductResponseDto> getSellProductBySellerId(@PathVariable Long sellerUserId) {
-        SellProductResponseDto responseDto = sellProductService.getSellProductById(sellerUserId);
+    // ID로 특정 판매 상품정보를 조회
+    @GetMapping("/seller/{sellerUserIdx}")
+    public ResponseEntity<SellProductResponseDto> getSellProductBySellerId(@PathVariable Long sellerUserIdx) {
+        SellProductResponseDto responseDto = sellProductService.getSellProductById(sellerUserIdx);
         return ResponseEntity.ok(responseDto);
     }
 
     // 특정 판매 상품을 삭제
-    @DeleteMapping("/seller/{sellerUserId}")
-    public ResponseEntity<Void> deleteSellProduct(@PathVariable Long sellerUserId) {
-        sellProductService.deleteSellProduct(sellerUserId);
+    @DeleteMapping("/seller/{sellerUserIdx}")
+    public ResponseEntity<Void> deleteSellProduct(@PathVariable Long sellerUserIdx) {
+        sellProductService.deleteSellProduct(sellerUserIdx);
         return ResponseEntity.noContent().build();
     }
 

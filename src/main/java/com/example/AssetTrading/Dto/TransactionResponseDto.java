@@ -24,8 +24,8 @@ public class TransactionResponseDto {
         return TransactionResponseDto.builder()
                 .transaction_idx(transaction.getTransaction_idx())
                 .product_idx(transaction.getSellProduct().getId())
-                .buyer_user_id(transaction.getBuyer().getUserId())
-                .seller_user_id(transaction.getSeller().getUserId())
+                .buyer_user_id(String.valueOf(transaction.getBuyer().getUser_idx()))
+                .seller_user_id(String.valueOf(transaction.getSeller().getUser_idx()))
                 .status(transaction.getStatus())
                 .completed_date(transaction.getFinishTime())
                 .build();

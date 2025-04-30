@@ -11,6 +11,7 @@ import lombok.*;
 public class UserRequestDto {
     private String userId;
     private String userPw;
+    private String userName;
     private String businessNum;
     private String companyName;
     private String companyAddress;
@@ -21,11 +22,13 @@ public class UserRequestDto {
         return User.builder()
                 .userId(userId)
                 .userPw(userPw)
+                .userName(userName)
                 .businessNum(businessNum)
                 .companyName(companyName)
                 .companyAddress(companyAddress)
                 .companyIndustry(companyIndustry)
                 .companyTell(companyTell)
+                .joinApproved(false)
                 .build();
     }
 }

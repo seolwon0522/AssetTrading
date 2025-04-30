@@ -20,9 +20,9 @@ public class UserController {
         return ResponseEntity.ok(userService.register(userRequestDto));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+    @GetMapping("/{user_idx}")
+    public ResponseEntity<UserResponseDto> getUserByUserIdx(@PathVariable Long user_idx) {
+        return ResponseEntity.ok(userService.getUserByUserIdx(user_idx));
     }
 
     @PostMapping("/login")

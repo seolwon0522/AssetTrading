@@ -41,8 +41,8 @@ public class SellProduct {
     @Column(name = "product_avail_date")
     private LocalDate productAvailDate;
 
-    @Column(name = "seller_user_id")
-    private String sellerUserId;
+    @Column(name = "seller_user_idx")
+    private Long sellerUserIdx;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "product_status")

@@ -20,7 +20,7 @@ public class TransactionRequestDto {
     private String sellerId;
     private String sellProductId;
 
-    public Transaction toEntity(User buyer, User seller, SellProduct sellProduct) {
+    public Transaction toEntity(User buyer, User seller, SellProduct sellProduct ) {
         return Transaction.builder()
                 .buyer(buyer)
                 .seller(seller)

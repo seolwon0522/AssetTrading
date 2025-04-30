@@ -18,7 +18,7 @@ public class SellProductResponseDto {
     private Integer productQuantity;
     private String productCreateDate;
     private LocalDate productAvailDate;
-    private String sellerUserId;
+    private Long sellerUserIdx;
     private String productStatus; // 여기는 String으로 반환
 
     // Entity → DTO 변환
@@ -31,7 +31,7 @@ public class SellProductResponseDto {
                 .productQuantity(product.getProductQuantity())
                 .productCreateDate(product.getProductCreateDate())
                 .productAvailDate(product.getProductAvailDate())
-                .sellerUserId(product.getSellerUserId())
+                .sellerUserIdx(product.getSellerUserIdx())
                 .productStatus(product.getProductStatus().name()) // enum을 문자열로 변환
                 .build();
     }
