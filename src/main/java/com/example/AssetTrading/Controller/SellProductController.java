@@ -34,7 +34,7 @@ public class SellProductController {
         return ResponseEntity.ok(products);
     }
 
-    // ID로 특정 판매 상품정보를 조회
+    // ID로 특정 판매 상품정보를 조회!
     @GetMapping("/seller/{sellerUserIdx}")
     public ResponseEntity<SellProductResponseDto> getSellProductBySellerId(@PathVariable Long sellerUserIdx) {
         SellProductResponseDto responseDto = sellProductService.getSellProductById(sellerUserIdx);
