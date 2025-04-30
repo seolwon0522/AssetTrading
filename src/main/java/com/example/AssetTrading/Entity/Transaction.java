@@ -19,9 +19,9 @@ public class Transaction {
     private Long transaction_idx;
 
     // idx 하라며 이게 맞는거야? 개어려워~ ㅠㅠ
-    private Long product_idx;
-    private Long buyer_idx;
-    private Long seller_idx;
+    // private Long product_idx;
+    // private Long buyer_idx;
+    // private Long seller_idx;
 
     // ManyToOne은 FetchType.LAZY 쓰면 좋다는데 일단 보류
     /** JoinColumn과 Column은 외래키 인가, 아닌가의 차이 (User, SellProduct는 다른 곳에서 가져온 것이라서 그럼) **/
