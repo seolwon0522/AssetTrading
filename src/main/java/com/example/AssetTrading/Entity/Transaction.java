@@ -18,13 +18,13 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transaction_idx;
 
-    // idx 하라며 어떻게 짜?
+    // idx 하라며 이게 맞는거야? 개어려워~ ㅠㅠ
     private Long product_idx;
     private Long buyer_idx;
     private Long seller_idx;
 
     // ManyToOne은 FetchType.LAZY 쓰면 좋다는데 일단 보류
-
+    /** JoinColumn과 Column은 외래키 인가, 아닌가의 차이 (User, SellProduct는 다른 곳에서 가져온 것이라서 그럼) **/
     // 구매자
     @ManyToOne
     @JoinColumn(name = "buyer_user_id")
@@ -41,8 +41,7 @@ public class Transaction {
     private SellProduct sellProduct;
 
     /** 의문점인것들 **/
-    /** Transition에도 거래 금액
-     private int price 를 해야되는가? **/
+    /** Transition에도 거래 금액이 필요한가? private int price 를 해야되는가? **/
 
     // String으로 해야 유지보수와 가독성이 좋음
     @Enumerated(EnumType.STRING)
@@ -50,10 +49,12 @@ public class Transaction {
     public TransactionStatus status;
 
     // 거래 시작 시간
+    @Column(name = "시작시간db저장소") // db 추가해주셔야되빈다
     private LocalDateTime startTime;
     // 거래 생성시 사용 코드 startTime = LocalDateTime.now();
 
     // 거래 완료 시간
+    @Column(name = "완료시간db저장소") // db 추가해주셔야되빈다
     private LocalDateTime finishTime;
 
 }
