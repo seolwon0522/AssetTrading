@@ -2,6 +2,7 @@ package com.example.AssetTrading.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -47,4 +48,7 @@ public class User {
 
     @Column(name = "join_approved")
     private boolean joinApproved;
+
+    @Column(name = "registered_at", updatable = false, insertable = false)
+    private LocalDateTime registeredAt;
 }
