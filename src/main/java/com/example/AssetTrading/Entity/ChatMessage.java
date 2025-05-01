@@ -9,15 +9,23 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name="chatmessages")
-
+@Table(name = "chat_msg")
 public class ChatMessage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    Long roomId;
-    Long senderId;
-    String content;
-    LocalDateTime sentAt;
+    @Column(name = "chat_msg_idx")
+    private Integer chat_msg_idx;
 
+    @Column(name = "chat_room_idx")
+    private Integer chat_room_idx;
+
+    @Column(name = "sender_user_idx")
+    private Integer sender_user_idx;
+
+    @Column(name = "chat_msg_content")
+    private String chat_msg_content;
+
+    @Column(name = "chat_send_date")
+    private LocalDateTime chat_send_date;
 }
