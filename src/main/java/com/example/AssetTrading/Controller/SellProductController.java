@@ -19,7 +19,7 @@ public class SellProductController {
 
 
 
-    // 새 판매 상품 등록
+    // 새 판매 상품 등록(기능 구현 완료)
     @PostMapping("/register/session")
     public ResponseEntity<SellProductResponseDto> createSellProduct(@RequestBody SellProductRequestDto requestDto,
                                                                 HttpSession session) {
@@ -27,28 +27,28 @@ public class SellProductController {
         return ResponseEntity.ok(responseDto);
     }
 
-    // 키워드로 상품 목록을 조회
+    // 키워드로 상품 목록을 조회 (기능 구현 완료)
     @GetMapping("/search")
     public ResponseEntity<List<SellProductResponseDto>> getAllSellProducts(@RequestParam String keyword) {
         List<SellProductResponseDto> products = sellProductService.getAllSellProducts(keyword);
         return ResponseEntity.ok(products);
     }
 
-    // ID로 특정 판매 상품정보를 조회!
-    @GetMapping("/seller/{sellerUserIdx}")
-    public ResponseEntity<SellProductResponseDto> getSellProductBySellerId(@PathVariable Long sellerUserIdx) {
-        SellProductResponseDto responseDto = sellProductService.getSellProductById(sellerUserIdx);
+    // 상품 ID로 특정 판매 상품정보를 조회 (기능 구현 완료)
+    @GetMapping("/{productId}")
+    public ResponseEntity<SellProductResponseDto> getSellProductById(@PathVariable Long productId) {
+        SellProductResponseDto responseDto = sellProductService.getSellProductById(productId);
         return ResponseEntity.ok(responseDto);
     }
 
-    // 특정 판매 상품을 삭제
-    @DeleteMapping("/seller/{sellerUserIdx}")
-    public ResponseEntity<Void> deleteSellProduct(@PathVariable Long sellerUserIdx) {
-        sellProductService.deleteSellProduct(sellerUserIdx);
+    // 상품 ID로 특정 판매 상품을 삭제 (기능 구현 완료)
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> deleteSellProduct(@PathVariable Long productId) {
+        sellProductService.deleteSellProduct(productId);
         return ResponseEntity.noContent().build();
     }
 
-    // 상품 상태 업데이트 이건 그냥 추가해봄
+    // 상품 상태 업데이트 이건 그냥 추가해봄 (기능 구현 완료)
     @PutMapping("/status/{productId}")
     public ResponseEntity<Void> updateProductStatus(@PathVariable Long productId,
                                                     @RequestParam boolean isSellingAvailable) {
@@ -56,7 +56,7 @@ public class SellProductController {
         return ResponseEntity.ok().build();
     }
 
-    // 노출 가능 상품 목록 조회
+    // 노출 가능 상품 목록 조회( 기능 구현 완료)
     @GetMapping("/visible")
     public ResponseEntity<List<SellProductResponseDto>> getVisibleProducts() {
         List<SellProductResponseDto> visibleProducts = sellProductService.getVisibleProducts();
