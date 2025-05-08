@@ -19,7 +19,7 @@ public class User {
     @Column(name = "user_idx")
     private Long user_idx;
 
-    @Column(name = "user_id") 
+    @Column(name = "user_id")
     private String userId;
 
     @Column(name = "user_pw")
@@ -32,7 +32,7 @@ public class User {
     private String businessNum;
 
     @Column(name = "company_name")
-    private String companyName; 
+    private String companyName;
 
     @Column(name = "company_address")
     private String companyAddress;
@@ -51,4 +51,7 @@ public class User {
 
     @Column(name = "registered_at", updatable = false, insertable = false)
     private LocalDateTime registeredAt;
+
+    @Column(name = "start_date")
+    private String startDate; // 개업일자(YYYYMMDD)
 }

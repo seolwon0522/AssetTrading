@@ -17,6 +17,7 @@ public class UserRequestDto {
     private String companyAddress;
     private String companyIndustry;
     private String companyTell;
+    private String startDate; // 개업일자(YYYYMMDD)
 
     public User toEntity() {
         return User.builder()
