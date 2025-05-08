@@ -15,28 +15,27 @@ import org.springframework.stereotype.Service;
 @Transactional                 /// 값들이 DB로 넘어가는데에 있어서 문제 발생 시 값이 안 넘어감
 public class UserService {
     private final UserRepository userRepository;               /// userRepository user의 임시저장소를 값 초기화
+    private final BusinessNumCheckService businessNumCheckService;
     private static final String LOGIN_USER = "LOGIN_USER";     /// ? 흠
 
     // 회원가입 관련 메소드
-    public UserResponseDto register(UserRequestDto userRequestDto) {  ///  회원가입 당시에 userRequestDto 타입으로 반환
-
-        // 만약, userRequestDto 안의 UserId 를 가져왔을 때,
-        // 그 값이 null 값이거나? 공백이라면?
-        // 예외 객체 생성 -> throw new IllegalArgumentException("이메일을 입력하세요");
-        if (userRequestDto.getUserId() == null || userRequestDto.getUserId().isBlank()) {
+    public UserResponseDto register(UserRequestDto dto) {
+        if (dto.getUserId() == null || dto.getUserId().isBlank()) {
             throw new IllegalArgumentException("이메일을 입력하세요");
         }
-
-        // 만약, userRepository 안의 있는 UserId를 가져왔을 때,
-        // 그 userId가 이미 DB에 존재한다면,
-        // 예외 객체 생성 -> throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
-        // 그 userId가 DB에 존재하지 않는다면,
-        // 회원가입 당시 입력한 값인 userRequestDto json -> dto의 toEntity java 객체 형태로 저장하여 그 값을 savedUser 넣음
-        // savedUser를 UserResponseDto의 fromEntity를 통해 회원의 정보를
-        if (userRepository.existsByUserId(userRequestDto.getUserId())) {
+        if (userRepository.existsByUserId(dto.getUserId())) {
             throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
         }
-        User savedUser = userRepository.save(userRequestDto.toEntity());
+        if (!businessNumCheckService.checkBusinessNum(
+                dto.getBusinessNum(),
+                dto.getUserName(),
+                dto.getStartDate(),
+                dto.getCompanyName()
+        )) {
+            throw new IllegalArgumentException("사업자등록 진위확인에 실패했습니다.");
+        }
+
+        User savedUser = userRepository.save(dto.toEntity());
         return UserResponseDto.fromEntity(savedUser);
     }
 
