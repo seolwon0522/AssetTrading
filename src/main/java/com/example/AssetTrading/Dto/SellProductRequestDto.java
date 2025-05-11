@@ -31,7 +31,7 @@ public class SellProductRequestDto {
                 .productQuantity(this.productQuantity)
                 .productCreateDate(this.productCreateDate)
                 .productAvailDate(this.productAvailDate)
-                .sellerUserIdx(this.sellerUserIdx)
+                .sellerUserIdx(this.sellerUserIdx) // 왜 오류뜨노 샹
                 .productStatus(ProductStatus.valueOf(this.productStatus)) // 이 부분에서 변환
                 .build();
     }
