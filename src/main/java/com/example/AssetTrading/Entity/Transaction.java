@@ -48,8 +48,8 @@ public class Transaction {
     private LocalDateTime createdTime;
 
     // 거래 승인 시간
-    @Column(name = "created_at")
-    private LocalDateTime processTime;
+    @Column(name = "processed_at")
+    private LocalDateTime processedTime;
 
     // 거래 수정이 필요한가? 일단 보류
     // 거래 수정 시간

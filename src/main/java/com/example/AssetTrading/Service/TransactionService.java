@@ -21,7 +21,7 @@ public class TransactionService {
     private final SellProductRepository sellProductRepository;
     /** 채팅방 **/
 
-    ////////////////// 예외들은 따로 생각하고 넣을라고 일단 몇개 넣어놓음. 예외는 무시하고 읽어보셈.
+    // 예외들은 따로 생각하고 넣을라고 일단 몇개 넣어놓음. 예외는 무시하고 읽어보셈.
     // 거래 요청
     @Transactional
     public TransactionResponseDto requestTransaction(TransactionRequestDto requestDto){
@@ -76,7 +76,7 @@ public class TransactionService {
 
         transaction.setStatus(TransactionStatus.PROCESSING); // 거래 상태를 승인으로 바꿈
         product.setProductStatus(ProductStatus.RESERVED); // 예약중으로 바뀜. 상품 상태에 추가해도 좋을듯(거래중)
-        transaction.setProcessTime(LocalDateTime.now()); // 거래 승인 시간 체크
+        transaction.setProcessedTime(LocalDateTime.now()); // 거래 승인 시간 체크
 
         return TransactionResponseDto.fromEntity(transaction);
     }
@@ -120,7 +120,7 @@ public class TransactionService {
         }
 
         transaction.setStatus(TransactionStatus.CANCELED); // 거래 상태를 취소로 바꿈
-        // 거래를 취소 한 시간값 추가 예정
+        // 거래를 취소 한 시간 값 추가 예정
 
         return TransactionResponseDto.fromEntity(transaction);
     }
