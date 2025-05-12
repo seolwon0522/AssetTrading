@@ -48,7 +48,7 @@ public class SellProductController {
         return ResponseEntity.noContent().build();
     }
 
-    // 상품 상태 업데이트 이건 그냥 추가해봄 (기능 구현 완료)
+    // 상품 상태 업데이트  (기능 구현 완료)
     @PutMapping("/status/{productId}")
     public ResponseEntity<Void> updateProductStatus(@PathVariable Long productId,
                                                     @RequestParam boolean isSellingAvailable) {

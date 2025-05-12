@@ -1,6 +1,5 @@
 package com.example.AssetTrading.Entity;
 
-import com.example.AssetTrading.Entity.ProductStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
