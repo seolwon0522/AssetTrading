@@ -18,26 +18,21 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transaction_idx;
 
-    // idx 하라며 이게 맞는거야? 개어려워~ ㅠㅠ
-    // private Long product_idx;
-    // private Long buyer_idx;
-    // private Long seller_idx;
-
-    // ManyToOne은 FetchType.LAZY 쓰면 좋다는데 일단 보류
-    /** JoinColumn과 Column은 외래키 인가, 아닌가의 차이 (User, SellProduct는 다른 곳에서 가져온 것이라서 그럼) **/
+    /** ManyToOne은 FetchType.LAZY 쓰면 좋다는데 일단 보류 뭔말인지 몰라서
+        JoinColumn과 Column은 외래키 인가, 아닌가의 차이 (User, SellProduct는 다른 곳에서 가져온 것이라서 그럼) **/
     // 구매자
     @ManyToOne
-    @JoinColumn(name = "buyer_user_id")
+    @JoinColumn(name = "buyer_user_idx")
     private User buyer;
 
     // 판매자
     @ManyToOne
-    @JoinColumn(name = "seller_user_id")
+    @JoinColumn(name = "seller_user_idx")
     private User seller;
 
     // 거래 할 상품
     @ManyToOne
-    @JoinColumn(name = "SellProduct")
+    @JoinColumn(name = "product_idx")
     private SellProduct sellProduct;
 
     /** 의문점인것들 **/
@@ -48,13 +43,25 @@ public class Transaction {
     @Column(name = "transaction_status")
     public TransactionStatus status;
 
-    // 거래 시작 시간
-    @Column(name = "시작시간db저장소") // db 추가해주셔야되빈다
-    private LocalDateTime startTime;
-    // 거래 생성시 사용 코드 startTime = LocalDateTime.now();
+    // 거래 생성 시간
+    @Column(name = "created_at")
+    private LocalDateTime createdTime;
+
+    // 거래 승인 시간
+    @Column(name = "processed_at")
+    private LocalDateTime processedTime;
+
+    // 거래 수정이 필요한가? 일단 보류
+    // 거래 수정 시간
+    @Column(name = "updated_at")
+    private LocalDateTime updatedTime;
+    // 거래 생성시 사용 코드 updatedTime = LocalDateTime.now();
 
     // 거래 완료 시간
-    @Column(name = "완료시간db저장소") // db 추가해주셔야되빈다
-    private LocalDateTime finishTime;
+    @Column(name = "successed_at")
+    private LocalDateTime successTime;
 
+    // 거래 삭제 시간
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedTime;
 }

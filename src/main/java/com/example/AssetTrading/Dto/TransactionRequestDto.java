@@ -1,31 +1,16 @@
 package com.example.AssetTrading.Dto;
 
-import com.example.AssetTrading.Entity.Transaction;
-import com.example.AssetTrading.Entity.TransactionStatus;
-import com.example.AssetTrading.Entity.User;
-import com.example.AssetTrading.Entity.SellProduct;
+
 import lombok.*;
-
-import java.time.LocalDateTime;
-
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 
+// buyer, seller, product는 서비스에서 조회해야 하므로 외부 주입 필요
 public class TransactionRequestDto {
     private Long buyerId;
-    private String sellerId;
-    private String sellProductId;
+    private Long productId;
 
-    public Transaction toEntity(User buyer, User seller, SellProduct sellProduct ) {
-        return Transaction.builder()
-                .buyer(buyer)
-                .seller(seller)
-                .sellProduct(sellProduct)
-                .status(TransactionStatus.WAITTING)
-                .build();
-    }
 }

@@ -31,7 +31,7 @@ public class SellProductResponseDto {
                 .productQuantity(product.getProductQuantity())
                 .productCreateDate(product.getProductCreateDate())
                 .productAvailDate(product.getProductAvailDate())
-                .sellerUserIdx(product.getSellerUserIdx())
+                .sellerUserIdx(product.getSellerUserIdx().getUser_idx())
                 .productStatus(product.getProductStatus().name()) // enum을 문자열로 변환
                 .build();
     }

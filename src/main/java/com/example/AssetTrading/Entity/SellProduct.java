@@ -40,8 +40,15 @@ public class SellProduct {
     @Column(name = "product_avail_date")
     private LocalDate productAvailDate;
 
-    @Column(name = "seller_user_idx")
-    private Long sellerUserIdx;
+    // 외래키로 연관 잡아야함
+    // 판매자
+    @ManyToOne
+    @JoinColumn(name = "seller_user_idx")
+    private User sellerUserIdx; // 이름 seller로 바꿔도 됨. transaction에서는 seller로 하긴했음.
+
+    ///  기존 seller 코드임 인지했으면 지워도 됨.
+//    @Column(name = "seller_user_idx")
+//    private Long sellerUserIdx;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "product_status")
