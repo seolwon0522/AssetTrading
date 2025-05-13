@@ -1,0 +1,27 @@
+spring.application.name=AssetTrading
+allbaro.api.url=https://api.odcloud.kr/api/nts-businessman/v1/validate
+allbaro.api.key=1eSCQTQUIGYN8kq9hQp8Fh0AaB7nQXDSVPu2ZGekXTEGFKUzErmtLCEeALW2A4h%2FLbeeF4l9Au%2F86O%2BjaPX58A%3D%3D"
+
+# Database Configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/asset_trading?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+spring.datasource.username=root
+spring.datasource.password=
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# JPA/Hibernate Configuration
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# Server Configuration
+server.port=8080
+
+# Logging Configuration
+logging.level.org.springframework.web=INFO
+logging.level.org.hibernate=ERROR
+logging.level.com.example.AssetTrading=DEBUG
+
+# WebSocket Configuration
+spring.websocket.max-text-message-size=8192
+spring.websocket.max-binary-message-size=8192 

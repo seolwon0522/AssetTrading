@@ -21,6 +21,9 @@ public class SellProductRequestDto {
     private LocalDate productAvailDate;
     private Long sellerUserIdx;
     private String productStatus; // 여기는 그대로 String
+    private String productCategory;
+    private String productTags;
+    private Boolean featured;
 
     public SellProduct toEntity() {
         return SellProduct.builder()
@@ -31,8 +34,12 @@ public class SellProductRequestDto {
                 .productQuantity(this.productQuantity)
                 .productCreateDate(this.productCreateDate)
                 .productAvailDate(this.productAvailDate)
-                .sellerUserIdx(this.sellerUserIdx) // 왜 오류뜨노 샹
-                .productStatus(ProductStatus.valueOf(this.productStatus)) // 이 부분에서 변환
+                .sellerUserIdx(this.sellerUserIdx)
+                .productStatus(ProductStatus.valueOf(this.productStatus))
+                .productCategory(this.productCategory)
+                .productTags(this.productTags)
+                .viewCount(0)
+                .featured(this.featured != null ? this.featured : false)
                 .build();
     }
 }

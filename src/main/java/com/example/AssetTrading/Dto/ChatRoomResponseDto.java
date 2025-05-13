@@ -4,6 +4,7 @@ import com.example.AssetTrading.Entity.ChatRoom;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,19 +13,44 @@ import java.time.LocalDateTime;
 @Builder
 public class ChatRoomResponseDto {
 
-    private Integer chat_room_idx;
-    private Integer transaction_idx;
-    private String buyer_user_id;
-    private String seller_user_id;
-    private LocalDateTime chat_room_create;
+    private Integer chatRoomIdx;
+    private Integer transactionIdx;
+    private Long buyerUserIdx;
+    private String buyerUserId;
+    private String buyerName;
+    private Long sellerUserIdx;
+    private String sellerUserId;
+    private String sellerName;
+    private Long productIdx;
+    private String productTitle;
+    private LocalDateTime chatRoomCreate;
+    private String lastMessage;
+    private LocalDateTime lastMessageTime;
+    private Integer unreadCount;
+    private List<ChatMessageResponseDto> messages;
 
     public static ChatRoomResponseDto fromEntity(ChatRoom chatRoom) {
         return ChatRoomResponseDto.builder()
-                .chat_room_idx(chatRoom.getChat_room_idx())
-                .transaction_idx(chatRoom.getTransaction_idx())
-                .buyer_user_id(chatRoom.getBuyer_user_id())
-                .seller_user_id(chatRoom.getSeller_user_id())
-                .chat_room_create(chatRoom.getChat_room_create())
+                .chatRoomIdx(chatRoom.getChatRoomIdx())
+                .transactionIdx(chatRoom.getTransactionIdx())
+                .buyerUserIdx(chatRoom.getBuyerUserIdx())
+                .buyerUserId(chatRoom.getBuyerUserId())
+                .buyerName(chatRoom.getBuyerName())
+                .sellerUserIdx(chatRoom.getSellerUserIdx())
+                .sellerUserId(chatRoom.getSellerUserId())
+                .sellerName(chatRoom.getSellerName())
+                .productIdx(chatRoom.getProductIdx())
+                .productTitle(chatRoom.getProductTitle())
+                .chatRoomCreate(chatRoom.getChatRoomCreate())
+                .lastMessage(chatRoom.getLastMessage())
+                .lastMessageTime(chatRoom.getLastMessageTime())
+                .unreadCount(chatRoom.getUnreadCount())
                 .build();
+    }
+    
+    // Add messages to the response
+    public ChatRoomResponseDto withMessages(List<ChatMessageResponseDto> messages) {
+        this.messages = messages;
+        return this;
     }
 }

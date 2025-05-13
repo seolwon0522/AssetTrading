@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Trading - 채팅 테스트</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Asset Trading - 채팅 테스트</h1>
+        
+        <div class="card">
+            <div class="card-header">
+                채팅방 입장
+            </div>
+            <div class="card-body">
+                <form id="joinForm">
+                    <div class="mb-3">
+                        <label for="roomId" class="form-label">채팅방 ID</label>
+                        <input type="number" class="form-control" id="roomId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userId" class="form-label">사용자 ID</label>
+                        <input type="text" class="form-control" id="userId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userName" class="form-label">사용자 이름</label>
+                        <input type="text" class="form-control" id="userName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userIdx" class="form-label">사용자 인덱스</label>
+                        <input type="number" class="form-control" id="userIdx" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">채팅방 입장</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                새 채팅방 생성
+            </div>
+            <div class="card-body">
+                <form id="createRoomForm">
+                    <div class="mb-3">
+                        <label for="transactionIdx" class="form-label">거래 ID</label>
+                        <input type="number" class="form-control" id="transactionIdx" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="buyerUserIdx" class="form-label">구매자 인덱스</label>
+                        <input type="number" class="form-control" id="buyerUserIdx" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="buyerUserId" class="form-label">구매자 ID</label>
+                        <input type="text" class="form-control" id="buyerUserId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="buyerName" class="form-label">구매자 이름</label>
+                        <input type="text" class="form-control" id="buyerName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sellerUserIdx" class="form-label">판매자 인덱스</label>
+                        <input type="number" class="form-control" id="sellerUserIdx" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sellerUserId" class="form-label">판매자 ID</label>
+                        <input type="text" class="form-control" id="sellerUserId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sellerName" class="form-label">판매자 이름</label>
+                        <input type="text" class="form-control" id="sellerName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productIdx" class="form-label">상품 인덱스</label>
+                        <input type="number" class="form-control" id="productIdx" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productTitle" class="form-label">상품 제목</label>
+                        <input type="text" class="form-control" id="productTitle" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">채팅방 생성</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 채팅방 입장 폼 제출
+        document.getElementById('joinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const roomId = document.getElementById('roomId').value;
+            const userId = document.getElementById('userId').value;
+            const userName = document.getElementById('userName').value;
+            const userIdx = document.getElementById('userIdx').value;
+            
+            // 채팅방 페이지로 이동
+            window.location.href = `chat.html?roomId=${roomId}&userId=${userId}&userName=${userName}&userIdx=${userIdx}`;
+        });
+        
+        // 새 채팅방 생성 폼 제출
+        document.getElementById('createRoomForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const roomData = {
+                transaction_idx: parseInt(document.getElementById('transactionIdx').value),
+                buyer_user_idx: parseInt(document.getElementById('buyerUserIdx').value),
+                buyer_user_id: document.getElementById('buyerUserId').value,
+                buyerName: document.getElementById('buyerName').value,
+                seller_user_idx: parseInt(document.getElementById('sellerUserIdx').value),
+                seller_user_id: document.getElementById('sellerUserId').value,
+                sellerName: document.getElementById('sellerName').value,
+                product_idx: parseInt(document.getElementById('productIdx').value),
+                productTitle: document.getElementById('productTitle').value
+            };
+            
+            // API 호출하여 채팅방 생성
+            fetch('/api/chat/rooms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(roomData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('채팅방 생성에 실패했습니다.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(`채팅방이 생성되었습니다. 채팅방 ID: ${data.chat_room_idx}`);
+                document.getElementById('roomId').value = data.chat_room_idx;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('채팅방 생성 중 오류가 발생했습니다.');
+            });
+        });
+    </script>
+</body>
+</html> 

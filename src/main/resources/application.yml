@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: AssetTrading
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://to-on.kr:3306/hanyang2
@@ -7,13 +9,25 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
 
 server:
   port: 8080
+
+logging:
+  level:
+    org.springframework.web: INFO
+    org.hibernate: ERROR
+    com.example.AssetTrading: DEBUG
+
+# 외부 API 설정
+allbaro:
+  api:
+    url: https://api.odcloud.kr/api/nts-businessman/v1/validate
+    key: 1eSCQTQUIGYN8kq9hQp8Fh0AaB7nQXDSVPu2ZGekXTEGFKUzErmtLCEeALW2A4h%2FLbeeF4l9Au%2F86O%2BjaPX58A%3D%3D

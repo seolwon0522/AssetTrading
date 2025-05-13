@@ -16,7 +16,7 @@ public class UserRequestDto {
     private String companyName;
     private String companyAddress;
     private String companyIndustry;
-    private String companyTell;
+    private String companyTel;
     private String startDate; // 개업일자(YYYYMMDD)
 
     public User toEntity() {
@@ -28,7 +28,7 @@ public class UserRequestDto {
                 .companyName(companyName)
                 .companyAddress(companyAddress)
                 .companyIndustry(companyIndustry)
-                .companyTell(companyTell)
+                .companyTel(companyTel)
                 .joinApproved(false)
                 .build();
     }

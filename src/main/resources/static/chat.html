@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Trading - 실시간 채팅</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- WebSocket client libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .chat-header {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .message-container {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 15px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .message-sent {
+            background-color: #dcf8c6;
+            margin-left: auto;
+        }
+        .message-received {
+            background-color: #f1f0f0;
+        }
+        .message-system {
+            background-color: #ffe6cc;
+            text-align: center;
+            max-width: 100%;
+            font-style: italic;
+        }
+        .message-info {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 2px;
+        }
+        .input-group {
+            margin-top: 15px;
+        }
+        .transaction-info {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container chat-container">
+        <div class="chat-header">
+            <h3 id="roomTitle">채팅방</h3>
+            <div class="transaction-info">
+                <div><strong>상품:</strong> <span id="productTitle"></span></div>
+                <div><strong>판매자:</strong> <span id="sellerName"></span></div>
+                <div><strong>구매자:</strong> <span id="buyerName"></span></div>
+                <div><strong>거래 상태:</strong> <span id="transactionStatus"></span></div>
+            </div>
+        </div>
+        
+        <div class="message-container" id="messageContainer"></div>
+        
+        <form id="messageForm">
+            <div class="input-group">
+                <input type="text" id="message" class="form-control" placeholder="메시지를 입력하세요...">
+                <button class="btn btn-primary" type="submit">전송</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // 사용자 정보 (로그인 시스템에서 가져와야 함)
+        let currentUser = {
+            user_idx: null,
+            userId: null,
+            userName: null
+        };
+        
+        // 채팅방 정보
+        let chatRoom = {
+            chat_room_idx: null,
+            transaction_idx: null,
+            product_idx: null,
+            productTitle: null,
+            buyer_user_idx: null,
+            buyer_user_id: null,
+            buyerName: null,
+            seller_user_idx: null,
+            seller_user_id: null,
+            sellerName: null
+        };
+        
+        // WebSocket 연결
+        let stompClient = null;
+        
+        // URL에서 파라미터 가져오기
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        // 페이지 로드 시 실행
+        window.onload = function() {
+            // URL에서 채팅방 ID와 사용자 정보 가져오기
+            const roomId = getUrlParameter('roomId');
+            const userId = getUrlParameter('userId');
+            const userName = getUrlParameter('userName');
+            const userIdx = getUrlParameter('userIdx');
+            
+            if (!roomId || !userId || !userName || !userIdx) {
+                alert('필요한 정보가 없습니다. 다시 시도해주세요.');
+                return;
+            }
+            
+            // 사용자 정보 설정
+            currentUser.user_idx = parseInt(userIdx);
+            currentUser.userId = userId;
+            currentUser.userName = userName;
+            
+            // 채팅방 정보 로드
+            loadChatRoom(roomId);
+        };
+        
+        // 채팅방 정보 로드
+        function loadChatRoom(roomId) {
+            fetch(`/api/chat/rooms/${roomId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('채팅방을 불러올 수 없습니다.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    chatRoom = data;
+                    
+                    // 채팅방 정보 표시
+                    document.getElementById('roomTitle').textContent = `${chatRoom.productTitle} 거래 채팅`;
+                    document.getElementById('productTitle').textContent = chatRoom.productTitle;
+                    document.getElementById('sellerName').textContent = chatRoom.sellerName;
+                    document.getElementById('buyerName').textContent = chatRoom.buyerName;
+                    
+                    // 메시지 표시
+                    if (data.messages && data.messages.length > 0) {
+                        data.messages.forEach(displayMessage);
+                    }
+                    
+                    // 읽음 표시 업데이트
+                    markMessagesAsRead(roomId, currentUser.user_idx);
+                    
+                    // WebSocket 연결
+                    connectToWebSocket(roomId);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('채팅방을 불러오는 중 오류가 발생했습니다.');
+                });
+        }
+        
+        // WebSocket 연결
+        function connectToWebSocket(roomId) {
+            const socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            
+            stompClient.connect({}, function(frame) {
+                console.log('Connected: ' + frame);
+                
+                // 채팅방 메시지 구독
+                stompClient.subscribe(`/topic/chat/${roomId}`, function(message) {
+                    const messageData = JSON.parse(message.body);
+                    displayMessage(messageData);
+                    
+                    // 다른 사용자의 메시지인 경우 읽음 표시 업데이트
+                    if (messageData.sender_user_idx !== currentUser.user_idx) {
+                        markMessagesAsRead(roomId, currentUser.user_idx);
+                    }
+                });
+                
+                // 사용자 입장 메시지 전송
+                sendJoinMessage(roomId);
+            }, function(error) {
+                console.error('STOMP error:', error);
+                alert('채팅 연결에 실패했습니다. 페이지를 새로고침해주세요.');
+            });
+        }
+        
+        // 사용자 입장 메시지 전송
+        function sendJoinMessage(roomId) {
+            if (stompClient) {
+                const joinMessage = {
+                    chat_room_idx: parseInt(roomId),
+                    sender_user_idx: currentUser.user_idx,
+                    senderName: currentUser.userName,
+                    type: 'JOIN'
+                };
+                
+                stompClient.send(`/app/chat.addUser/${roomId}`, {}, JSON.stringify(joinMessage));
+            }
+        }
+        
+        // 메시지 표시
+        function displayMessage(message) {
+            const messageContainer = document.getElementById('messageContainer');
+            const messageDiv = document.createElement('div');
+            
+            // 메시지 타입에 따라 스타일 지정
+            if (message.type === 'JOIN' || message.type === 'LEAVE' || message.type === 'TRANSACTION_UPDATE') {
+                messageDiv.className = 'message message-system';
+            } else if (message.sender_user_idx === currentUser.user_idx) {
+                messageDiv.className = 'message message-sent';
+            } else {
+                messageDiv.className = 'message message-received';
+            }
+            
+            // 메시지 내용
+            const contentDiv = document.createElement('div');
+            contentDiv.textContent = message.chat_msg_content;
+            messageDiv.appendChild(contentDiv);
+            
+            // 메시지 정보 (보낸 사람, 시간)
+            if (message.type === 'CHAT') {
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'message-info';
+                
+                const date = new Date(message.chat_send_date);
+                const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                if (message.sender_user_idx !== currentUser.user_idx) {
+                    infoDiv.textContent = `${message.senderName} · ${timeString}`;
+                } else {
+                    infoDiv.textContent = timeString;
+                }
+                
+                messageDiv.appendChild(infoDiv);
+            }
+            
+            messageContainer.appendChild(messageDiv);
+            
+            // 스크롤을 최신 메시지로 이동
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+        
+        // 메시지 전송
+        document.getElementById('messageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const messageInput = document.getElementById('message');
+            const messageContent = messageInput.value.trim();
+            
+            if (messageContent && stompClient) {
+                const chatMessage = {
+                    chat_room_idx: chatRoom.chat_room_idx,
+                    sender_user_idx: currentUser.user_idx,
+                    senderName: currentUser.userName,
+                    chat_msg_content: messageContent,
+                    type: 'CHAT'
+                };
+                
+                stompClient.send(`/app/chat.sendMessage/${chatRoom.chat_room_idx}`, {}, JSON.stringify(chatMessage));
+                messageInput.value = '';
+            }
+        });
+        
+        // 메시지 읽음 표시 업데이트
+        function markMessagesAsRead(roomId, userId) {
+            fetch(`/api/chat/messages/${roomId}/read?userId=${userId}`, {
+                method: 'PUT'
+            }).catch(error => {
+                console.error('Error marking messages as read:', error);
+            });
+        }
+        
+        // 페이지 종료 시 연결 해제
+        window.onbeforeunload = function() {
+            if (stompClient) {
+                stompClient.disconnect();
+            }
+        };
+    </script>
+</body>
+</html> 

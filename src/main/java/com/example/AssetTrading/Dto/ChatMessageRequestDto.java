@@ -1,5 +1,6 @@
 package com.example.AssetTrading.Dto;
 
+import com.example.AssetTrading.Entity.ChatMessage;
 import lombok.*;
 
 @Getter
@@ -9,7 +10,20 @@ import lombok.*;
 @Builder
 public class ChatMessageRequestDto {
 
-    private Integer chat_room_idx;       // 채팅방 ID
-    private Integer sender_user_idx;     // 보낸 사람 ID
-    private String chat_msg_content;     // 메시지 내용
+    private Integer chatRoomIdx;       // 채팅방 ID
+    private Integer senderUserIdx;     // 보낸 사람 ID
+    private String senderName;           // 보낸 사람 이름
+    private String chatMsgContent;     // 메시지 내용
+    private ChatMessage.MessageType type; // 메시지 타입
+    
+    public ChatMessage toEntity() {
+        return ChatMessage.builder()
+                .chatRoomIdx(chatRoomIdx)
+                .senderUserIdx(senderUserIdx)
+                .senderName(senderName)
+                .chatMsgContent(chatMsgContent)
+                .isRead(false)
+                .type(type)
+                .build();
+    }
 }

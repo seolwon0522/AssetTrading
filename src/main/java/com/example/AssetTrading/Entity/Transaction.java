@@ -16,7 +16,8 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transaction_idx;
+    @Column(name = "transaction_idx")
+    private Long transactionIdx;
 
     /** ManyToOne은 FetchType.LAZY 쓰면 좋다는데 일단 보류 뭔말인지 몰라서
         JoinColumn과 Column은 외래키 인가, 아닌가의 차이 (User, SellProduct는 다른 곳에서 가져온 것이라서 그럼) **/
@@ -38,7 +39,7 @@ public class Transaction {
     /** 의문점인것들 **/
     /** Transition에도 거래 금액이 필요한가? private int price 를 해야되는가? **/
 
-    // String으로 해야 유지보수와 가독성이 좋음
+    // 거래 상태 (REQUESTED, PROCESSING, COMPLETED, CANCELED)
     @Enumerated(EnumType.STRING)
     @Column(name = "transaction_status")
     public TransactionStatus status;
@@ -51,11 +52,9 @@ public class Transaction {
     @Column(name = "processed_at")
     private LocalDateTime processedTime;
 
-    // 거래 수정이 필요한가? 일단 보류
     // 거래 수정 시간
     @Column(name = "updated_at")
     private LocalDateTime updatedTime;
-    // 거래 생성시 사용 코드 updatedTime = LocalDateTime.now();
 
     // 거래 완료 시간
     @Column(name = "successed_at")
