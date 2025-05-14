@@ -1,0 +1,36 @@
+{
+  "businessInfo": {
+    "businessNum": "187-09-00256",
+    "companyName": "트웬티세븐",
+    "companyNameEng": "TWENTYSEVEN",
+    "representativeName": "차일웅",
+    "establishmentDate": "20151111",
+    "businessStatus": "계속사업자",
+    "businessType": "개인",
+    "taxationType": "부가가치세 일반과세자",
+    "businessScale": "중소기업",
+    "employeeCount": "5",
+    "mainOffice": true,
+    "businessCategory": "비디오물제작업",
+    "businessItem": "광고물 문안, 도안, 설계 등 작성업",
+    "mainProduct": "동영상제작서비스",
+    "phone": "070-4114-2742",
+    "fax": "02-6455-2742",
+    "email": "ceo@27creator.com",
+    "website": "http://www.27creator.com",
+    "postalCode": "07806",
+    "address": "서울특별시 강서구 공항대로 222, 10층 1004호(마곡동, 발산W타워)",
+    "addressEng": "222, Gonghang-daero, Gangseo-gu, Seoul, Republic of Korea",
+    "taxOffice": "강서세무서",
+    "taxOfficePhone": "02-2630-4200",
+    "taxOfficeAddress": "서울특별시 강서구 마곡서1로 60(마곡동)",
+    "onlineSalesNum": "2022-서울강서-3490",
+    "industryClassification": {
+      "mainCategory": "도매 및 소매업",
+      "middleCategory": "소매업; 자동차 제외",
+      "subCategory": "무점포 소매업",
+      "detailedCategory": "통신 판매업",
+      "specificCategory": "전자상거래 소매업"
+    }
+  }
+} 

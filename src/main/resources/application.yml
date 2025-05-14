@@ -17,6 +17,11 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
 
+  # WebSocket Configuration
+  websocket:
+    max-text-message-size: 8192
+    max-binary-message-size: 8192
+
 server:
   port: 8080
 
@@ -30,4 +35,10 @@ logging:
 allbaro:
   api:
     url: https://api.odcloud.kr/api/nts-businessman/v1/validate
-    key: 1eSCQTQUIGYN8kq9hQp8Fh0AaB7nQXDSVPu2ZGekXTEGFKUzErmtLCEeALW2A4h%2FLbeeF4l9Au%2F86O%2BjaPX58A%3D%3D
+    key: BewiLghfZi%2Fmtgug%2FWSyV0S97krKzeaIPXWkRFlLE4A2FsqfCqVDri03uY4pg7XbYnhoA7fTCb7z0VCGiHX4RQ%3D%3D
+
+# 국세청 사업자등록정보 진위확인 API 설정
+business:
+  api:
+    url: https://api.odcloud.kr/api/nts-businessman/v1/validate
+    key: BewiLghfZi%2Fmtgug%2FWSyV0S97krKzeaIPXWkRFlLE4A2FsqfCqVDri03uY4pg7XbYnhoA7fTCb7z0VCGiHX4RQ%3D%3D
