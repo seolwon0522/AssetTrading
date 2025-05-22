@@ -59,7 +59,6 @@ public class UserService {
         
         // 새 사용자 생성
         User user = dto.toEntity();
-        // TODO: 실제 운영 환경에서는 PasswordEncoder를 사용하여 암호화 필요
         user.setJoinApproved(false); // 기본적으로 승인 대기 상태로 설정
         user.setRegisteredAt(LocalDateTime.now());
         
@@ -114,8 +113,7 @@ public class UserService {
         User user = userRepository.findByUserId(loginDto.getUserId())
             .orElseThrow(() -> new AuthenticationException("아이디 또는 비밀번호가 올바르지 않습니다."));
         
-        // 비밀번호 검증 (평문 비교)
-        // TODO: 실제 운영 환경에서는 PasswordEncoder를 사용하여 암호화된 비밀번호 비교 필요
+        // 비밀번호 검증 
         if (!user.getUserPw().equals(loginDto.getUserPw())) {
             log.warn("비밀번호 불일치: {}", loginDto.getUserId());
             throw new AuthenticationException("아이디 또는 비밀번호가 올바르지 않습니다.");
@@ -163,8 +161,7 @@ public class UserService {
         User user = userRepository.findById(userIdx)
             .orElseThrow(() -> new ResourceNotFoundException("해당 사용자가 존재하지 않습니다. user_idx: " + userIdx));
         
-        // 현재 비밀번호 검증 (평문 비교)
-        // TODO: 실제 운영 환경에서는 PasswordEncoder를 사용하여 암호화된 비밀번호 비교 필요
+        // 현재 비밀번호 검증 
         if (!user.getUserPw().equals(currentPassword)) {
             throw new AuthenticationException("현재 비밀번호가 일치하지 않습니다.");
         }
@@ -174,8 +171,7 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호는 " + PASSWORD_MIN_LENGTH + "자 이상이어야 합니다.");
         }
         
-        // 새 비밀번호 저장 (평문)
-        // TODO: 실제 운영 환경에서는 PasswordEncoder를 사용하여 암호화 필요
+        // 새 비밀번호 저장 
         user.setUserPw(newPassword);
         userRepository.save(user);
         
