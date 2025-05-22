@@ -49,7 +49,7 @@ public class FileStorageService {
      * 파일 업로드
      * 
      * @param file 업로드할 파일
-     * @param entityType 연결된 엔티티 타입 (USER, PRODUCT, CHAT 등)
+     * @param entityType 연결된 엔티티 타입 (USER, PRODUCT 등)
      * @param entityId 연결된 엔티티 ID
      * @param uploaderId 업로더 ID
      * @return 저장된 파일 정보

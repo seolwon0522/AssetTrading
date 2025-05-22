@@ -35,7 +35,7 @@ public class FileStorage {
     private String fileType; // 파일 유형
 
     @Column(name = "entity_type")
-    private String entityType; // 연결된 엔티티 타입 (USER, PRODUCT, CHAT 등)
+    private String entityType; // 연결된 엔티티 타입 (USER, PRODUCT 등)
 
     @Column(name = "entity_id")
     private Long entityId; // 연결된 엔티티 ID

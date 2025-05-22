@@ -1,11 +1,9 @@
 package com.example.AssetTrading.Service;
 
-import com.example.AssetTrading.Dto.ChatRoomRequestDto;
 import com.example.AssetTrading.Dto.TransactionRequestDto;
 import com.example.AssetTrading.Dto.TransactionResponseDto;
 import com.example.AssetTrading.Entity.*;
 import com.example.AssetTrading.Exception.TransactionException;
-import com.example.AssetTrading.Repository.ChatRoomRepository;
 import com.example.AssetTrading.Repository.SellProductRepository;
 import com.example.AssetTrading.Repository.TransactionRepository;
 import com.example.AssetTrading.Repository.UserRepository;
@@ -24,8 +22,6 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final SellProductRepository sellProductRepository;
-    private final ChatService chatService;
-    private final ChatRoomRepository chatRoomRepository;
 
     // 거래 요청
     @Transactional
@@ -63,9 +59,6 @@ public class TransactionService {
                 .build();
 
         Transaction savedTransaction = transactionRepository.save(transaction);
-        
-        // 거래 요청 시 채팅방 생성
-        createChatRoomForTransaction(savedTransaction);
 
         return TransactionResponseDto.fromEntity(savedTransaction);
     }
@@ -92,9 +85,6 @@ public class TransactionService {
         transaction.setStatus(TransactionStatus.PROCESSING);
         product.setProductStatus(ProductStatus.RESERVED);
         transaction.setProcessedTime(LocalDateTime.now());
-        
-        // 거래 상태 변경 시 채팅방에 알림 메시지 전송
-        sendTransactionStatusUpdateToChat(transaction, "승인");
 
         return TransactionResponseDto.fromEntity(transaction);
     }
@@ -114,9 +104,6 @@ public class TransactionService {
 
         SellProduct product = transaction.getSellProduct();
         product.setProductStatus(ProductStatus.SOLD_OUT);
-        
-        // 거래 상태 변경 시 채팅방에 알림 메시지 전송
-        sendTransactionStatusUpdateToChat(transaction, "완료");
 
         return TransactionResponseDto.fromEntity(transaction);
     }
@@ -138,9 +125,6 @@ public class TransactionService {
         if (transaction.getStatus() == TransactionStatus.PROCESSING) {
             transaction.getSellProduct().setProductStatus(ProductStatus.AVAILABLE);
         }
-        
-        // 거래 상태 변경 시 채팅방에 알림 메시지 전송
-        sendTransactionStatusUpdateToChat(transaction, "취소");
 
         return TransactionResponseDto.fromEntity(transaction);
     }
@@ -200,57 +184,18 @@ public class TransactionService {
                 .orElseThrow(() -> new TransactionException("존재하지 않는 거래입니다.", "TRANSACTION_NOT_FOUND"));
     }
     
-    // 동일 상품에 대한 다른 거래 요청 자동 취소
     @Transactional
     private void cancelOtherRequests(Transaction currentTransaction) {
+        // 현재 거래의 상품에 대한 다른 요청들을 모두 취소 처리
         SellProduct product = currentTransaction.getSellProduct();
-        List<Transaction> otherRequests = transactionRepository.findBySellProductAndStatusAndTransactionIdxNot(
+        
+        transactionRepository.findBySellProductAndStatusAndTransactionIdxNot(
                 product, 
                 TransactionStatus.REQUESTED, 
-                currentTransaction.getTransactionIdx());
-        
-        for (Transaction otherRequest : otherRequests) {
-            otherRequest.setStatus(TransactionStatus.CANCELED);
-            otherRequest.setDeletedTime(LocalDateTime.now());
-            
-            // 취소된 거래에 대한 채팅방 알림 전송
-            sendTransactionStatusUpdateToChat(otherRequest, "취소");
-        }
-    }
-    
-    // 거래에 대한 채팅방 생성
-    private void createChatRoomForTransaction(Transaction transaction) {
-        // 이미 채팅방이 존재하는지 확인
-        if (chatRoomRepository.existsByTransactionIdx(transaction.getTransactionIdx().intValue())) {
-            return;
-        }
-        
-        User buyer = transaction.getBuyer();
-        User seller = transaction.getSeller();
-        SellProduct product = transaction.getSellProduct();
-        
-        ChatRoomRequestDto chatRoomRequestDto = ChatRoomRequestDto.builder()
-                .transaction_idx(transaction.getTransactionIdx().intValue())
-                .buyer_user_idx(buyer.getUser_idx())
-                .buyer_user_id(buyer.getUserId())
-                .buyerName(buyer.getUserName())
-                .seller_user_idx(seller.getUser_idx())
-                .seller_user_id(seller.getUserId())
-                .sellerName(seller.getUserName())
-                .product_idx(product.getId())
-                .productTitle(product.getProductTitle())
-                .build();
-        
-        chatService.createChatRoom(chatRoomRequestDto);
-    }
-    
-    // 거래 상태 변경 시 채팅방에 알림 메시지 전송
-    private void sendTransactionStatusUpdateToChat(Transaction transaction, String status) {
-        try {
-            chatService.sendTransactionStatusUpdate(transaction.getTransactionIdx().intValue(), status);
-        } catch (Exception e) {
-            // 채팅방이 없는 경우 등의 예외 처리 (로깅 등 추가 가능)
-            // 채팅 알림 실패가 거래 처리를 방해하지 않도록 예외를 잡아서 처리
-        }
+                currentTransaction.getTransactionIdx()
+            ).forEach(transaction -> {
+                transaction.setStatus(TransactionStatus.CANCELED);
+                transaction.setDeletedTime(LocalDateTime.now());
+            });
     }
 }

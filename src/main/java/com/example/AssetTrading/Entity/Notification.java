@@ -30,10 +30,10 @@ public class Notification {
     private String content; // 알림 내용
 
     @Column(name = "notification_type")
-    private String notificationType; // 알림 유형 (TRANSACTION, CHAT, SYSTEM 등)
+    private String notificationType; // 알림 유형 (TRANSACTION, SYSTEM 등)
 
     @Column(name = "reference_id")
-    private Long referenceId; // 참조 ID (거래 ID, 채팅 ID 등)
+    private Long referenceId; // 참조 ID (거래 ID 등)
     
     @Column(name = "is_read", columnDefinition = "boolean default false")
     private Boolean isRead; // 읽음 여부

@@ -26,8 +26,8 @@ public class NotificationService {
      * @param userId 사용자 ID
      * @param title 알림 제목
      * @param content 알림 내용
-     * @param notificationType 알림 유형 (TRANSACTION, CHAT, SYSTEM 등)
-     * @param referenceId 참조 ID (거래 ID, 채팅룸 ID 등)
+     * @param notificationType 알림 유형 (TRANSACTION, SYSTEM 등)
+     * @param referenceId 참조 ID (거래 ID 등)
      * @return 생성된 알림
      */
     public Notification createNotification(Long userId, String title, String content, 
@@ -123,24 +123,6 @@ public class NotificationService {
             message, 
             "TRANSACTION", 
             transactionId
-        );
-    }
-    
-    /**
-     * 채팅 관련 알림을 생성합니다.
-     * 
-     * @param userId 사용자 ID
-     * @param chatRoomId 채팅방 ID
-     * @param message 알림 메시지
-     * @return 생성된 알림
-     */
-    public Notification createChatNotification(Long userId, Long chatRoomId, String message) {
-        return createNotification(
-            userId, 
-            "채팅 알림", 
-            message, 
-            "CHAT", 
-            chatRoomId
         );
     }
     
