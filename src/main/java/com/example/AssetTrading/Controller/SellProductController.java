@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 public class SellProductController {
 
     private final SellProductService sellProductService;
@@ -23,7 +23,7 @@ public class SellProductController {
     // 새 판매 상품 등록(기능 구현 완료)
     @PostMapping("/register/session")
     public ResponseEntity<SellProductResponseDto> createSellProduct(@RequestBody SellProductRequestDto requestDto,
-                                                                HttpSession session) {
+                                                                    HttpSession session) {
         SellProductResponseDto responseDto = sellProductService.createSellProductWithSession(requestDto, session);
         return ResponseEntity.ok(responseDto);
     }
@@ -34,7 +34,7 @@ public class SellProductController {
         List<SellProductResponseDto> products = sellProductService.getAllSellProducts(keyword);
         return ResponseEntity.ok(products);
     }
-    
+
     // 키워드로 상품 목록을 페이징하여 조회
     @GetMapping("/search/paged")
     public ResponseEntity<Page<SellProductResponseDto>> getAllSellProductsPaged(
@@ -61,7 +61,7 @@ public class SellProductController {
         sellProductService.deleteSellProduct(productId);
         return ResponseEntity.noContent().build();
     }
-    
+
     // 상품 정보 업데이트
     @PutMapping("/{productId}")
     public ResponseEntity<SellProductResponseDto> updateSellProduct(
@@ -78,7 +78,7 @@ public class SellProductController {
         sellProductService.updateStatus(productId, isSellingAvailable);
         return ResponseEntity.ok().build();
     }
-    
+
     // 상품 상태 상세 업데이트 (AVAILABLE, UNAVAILABLE, RESERVED, SOLD_OUT)
     @PutMapping("/status/detail/{productId}")
     public ResponseEntity<Void> updateDetailProductStatus(
@@ -94,7 +94,7 @@ public class SellProductController {
         List<SellProductResponseDto> visibleProducts = sellProductService.getVisibleProducts();
         return ResponseEntity.ok(visibleProducts);
     }
-    
+
     // 노출 가능 상품 목록 페이징 조회
     @GetMapping("/visible/paged")
     public ResponseEntity<Page<SellProductResponseDto>> getVisibleProductsPaged(
@@ -103,35 +103,35 @@ public class SellProductController {
         Page<SellProductResponseDto> visibleProducts = sellProductService.getVisibleProductsPaged(page, size);
         return ResponseEntity.ok(visibleProducts);
     }
-    
+
     // 카테고리별 상품 조회
     @GetMapping("/category/{category}")
     public ResponseEntity<List<SellProductResponseDto>> getProductsByCategory(@PathVariable("category") String category) {
         List<SellProductResponseDto> products = sellProductService.getProductsByCategory(category);
         return ResponseEntity.ok(products);
     }
-    
+
     // 판매자별 상품 조회
     @GetMapping("/seller/{sellerUserIdx}")
     public ResponseEntity<List<SellProductResponseDto>> getProductsBySellerUserIdx(@PathVariable("sellerUserIdx") Long sellerUserIdx) {
         List<SellProductResponseDto> products = sellProductService.getProductsBySellerUserIdx(sellerUserIdx);
         return ResponseEntity.ok(products);
     }
-    
+
     // 추천 상품 조회
     @GetMapping("/featured")
     public ResponseEntity<List<SellProductResponseDto>> getFeaturedProducts() {
         List<SellProductResponseDto> products = sellProductService.getFeaturedProducts();
         return ResponseEntity.ok(products);
     }
-    
+
     // 태그별 상품 조회
     @GetMapping("/tag/{tag}")
     public ResponseEntity<List<SellProductResponseDto>> getProductsByTag(@PathVariable("tag") String tag) {
         List<SellProductResponseDto> products = sellProductService.getProductsByTag(tag);
         return ResponseEntity.ok(products);
     }
-    
+
     // 가격 범위로 상품 조회
     @GetMapping("/price-range")
     public ResponseEntity<List<SellProductResponseDto>> getProductsByPriceRange(
@@ -140,21 +140,21 @@ public class SellProductController {
         List<SellProductResponseDto> products = sellProductService.getProductsByPriceRange(minPrice, maxPrice);
         return ResponseEntity.ok(products);
     }
-    
+
     // 인기 상품 조회 (조회수 기준)
     @GetMapping("/popular")
     public ResponseEntity<List<SellProductResponseDto>> getTopViewedProducts() {
         List<SellProductResponseDto> products = sellProductService.getTopViewedProducts();
         return ResponseEntity.ok(products);
     }
-    
+
     // 추천 상품 토글 (추천 설정/해제)
     @PutMapping("/featured/toggle/{productId}")
     public ResponseEntity<Void> toggleFeaturedStatus(@PathVariable("productId") Long productId) {
         sellProductService.toggleFeaturedStatus(productId);
         return ResponseEntity.ok().build();
     }
-    
+
     // 에러 핸들링
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException e) {
@@ -162,7 +162,7 @@ public class SellProductController {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(Map.of("error", e.getMessage()));
     }
-    
+
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<Map<String, String>> handleIllegalStateException(IllegalStateException e) {
         return ResponseEntity
