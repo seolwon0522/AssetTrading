@@ -42,6 +42,9 @@ public class User {
     @Column(name = "company_tel")
     private String companyTel; // 회사 전화번호
 
+    @Column(name = "company_email")
+    private String companyEmail; // 회사 이메일
+
     @Transient
     private String description; // 설명 (데이터베이스에 저장되지 않음)
 

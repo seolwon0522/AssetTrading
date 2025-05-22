@@ -1,55 +1,81 @@
-# Business Registration Verification API
+# 자산거래 시스템 API 테스트
 
-This project implements a business registration verification API that integrates with the Korean National Tax Service.
+이 프로젝트는 기업 간 자산거래 시스템의 API를 테스트하기 위한 자료를 포함하고 있습니다.
 
-## Testing the Business Verification API
+## 테스트 구성 요소
 
-### Using Postman
+1. **Postman 콜렉션 파일** - `AssetTrading_API_Collection.postman_collection.json`
+2. **테스트 데이터 파일** - `test_data.json`
+3. **수정된 테스트 코드** - `ChatControllerTest_수정본.java`
 
-1. Start the Spring Boot application
-2. Send a POST request to `http://localhost:8080/api/business-verification/verify`
-3. Set the Content-Type header to `application/json`
-4. Use the following JSON body:
+## 테스트 데이터
 
-```json
-{
-  "businessNum": "187-09-00256",
-  "userName": "차일웅",
-  "startDate": "20151111",
-  "companyName": "트웬티세븐"
-}
-```
+테스트에 사용된 데이터는 다음과 같은 실제 기업 정보를 기반으로 합니다:
 
-### Expected Response
+- 삼성전자 (사업자번호: 124-81-00998)
+- LG전자 (사업자번호: 107-86-14075)
+- 현대자동차 (사업자번호: 101-81-09147)
+- SK하이닉스 (사업자번호: 126-81-03725)
+- 네이버 (사업자번호: 220-81-62517)
 
-```json
-{
-  "valid": true,
-  "businessNum": "187-09-00256"
-}
-```
+## Postman 콜렉션 사용 방법
 
-## API Parameters
+1. **Postman 설치하기**
+   - [Postman 공식 사이트](https://www.postman.com/downloads/)에서 다운로드 및 설치
 
-| Parameter    | Description                                | Format      |
-|--------------|--------------------------------------------| ------------|
-| businessNum  | Business registration number               | With or without hyphens |
-| userName     | Owner/representative name                  | Text        |
-| startDate    | Business start date                        | YYYYMMDD    |
-| companyName  | Company name                               | Text        |
+2. **콜렉션 가져오기**
+   - Postman 실행 후 상단의 `Import` 버튼 클릭
+   - `AssetTrading_API_Collection.postman_collection.json` 파일 선택하여 가져오기
 
-## Important Notes
+3. **환경 설정**
+   - 기본적으로 `{{base_url}}` 변수는 `http://localhost:8080`으로 설정되어 있음
+   - 다른 서버 주소를 사용하려면 Postman 환경 변수를 수정
 
-1. The API key is configured in `application.properties` and `application.yml`
-2. The date format must be YYYYMMDD (without hyphens)
-3. Business numbers can be entered with or without hyphens (the system will remove them)
-4. The API validates against the Korean National Tax Service database
+4. **API 테스트 실행**
+   - 각 요청을 선택하여 `Send` 버튼 클릭
+   - 요청 본문과 응답 본문을 확인
 
-## Troubleshooting
+## API 테스트 항목
 
-If you encounter issues with the API, check the following:
+콜렉션은 다음 주요 영역으로 구성되어 있습니다:
 
-1. Ensure the API key is correctly encoded in the configuration files
-2. Verify that the business information is correct (check against bizno.net)
-3. Make sure the date format is correct (YYYYMMDD without hyphens)
-4. Check the application logs for detailed error messages 
+### 1. 사용자 관리
+- 회원가입
+- 로그인/로그아웃
+- 사용자 정보 조회
+- 비밀번호 변경
+- 회사 정보 업데이트
+- 관리자 기능 (승인, 미승인 사용자 조회)
+
+### 2. 사업자 검증
+- 사업자등록번호 진위확인
+- 사업자등록번호 상태 조회
+
+### 3. 상품 관리
+- 상품 등록, 조회, 수정, 삭제
+- 상품 상태 관리
+- 카테고리별, 판매자별 상품 조회
+
+### 4. 거래 관리
+- 거래 요청, 승인, 완료, 취소
+- 거래 상세 조회
+- 거래 내역 조회 (구매자별, 판매자별, 상품별, 상태별)
+
+### 5. 채팅
+- 채팅방 생성, 조회, 삭제
+- 메시지 전송, 조회, 읽음 처리
+- 거래 상태 업데이트 메시지 전송
+
+## 참고사항
+
+1. 테스트를 실행하기 전에 자산거래 시스템 서버가 실행 중이어야 합니다.
+2. 인증이 필요한 API의 경우, 먼저 로그인 API를 호출하여 세션 기반 인증을 수행해야 합니다.
+3. 각 API의 상세 설명은 Postman 콜렉션의 각 요청 항목에 포함되어 있습니다.
+
+## 테스트 코드 활용
+
+`ChatControllerTest_수정본.java` 파일은 채팅 컨트롤러에 대한 단위 테스트를 포함하고 있으며, 실제 기업 데이터를 사용합니다. 이 파일은 다음과 같이 활용할 수 있습니다:
+
+1. `src/test/java/com/example/AssetTrading/Controller/` 디렉토리에 복사
+2. JUnit을 통해 테스트 실행
+3. 테스트 결과 확인 및 디버깅 

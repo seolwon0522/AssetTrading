@@ -1,0 +1,72 @@
+{
+  "user": {
+    "user_idx": 1,
+    "userId": "samsung_corp",
+    "userPw": "samsung1234",
+    "userName": "김기남",
+    "businessNum": "124-81-00998",
+    "companyName": "삼성전자",
+    "companyAddress": "경기도 수원시 영통구 삼성로 129 (매탄동)",
+    "companyIndustry": "전자제품 제조",
+    "companyTel": "02-2255-0114",
+    "companyEmail": "contact@samsung.com",
+    "joinApproved": true,
+    "startDate": "19690101"
+  },
+  "user2": {
+    "user_idx": 2,
+    "userId": "lg_electronics",
+    "userPw": "lg1234",
+    "userName": "조주완",
+    "businessNum": "107-86-14075",
+    "companyName": "LG전자",
+    "companyAddress": "서울특별시 영등포구 여의대로 128 (여의도동)",
+    "companyIndustry": "전자제품 제조",
+    "companyTel": "02-3777-1114",
+    "companyEmail": "contact@lge.com",
+    "joinApproved": true,
+    "startDate": "19580224"
+  },
+  "user3": {
+    "user_idx": 3,
+    "userId": "hyundai_motors",
+    "userPw": "hyundai1234",
+    "userName": "장재훈",
+    "businessNum": "101-81-09147",
+    "companyName": "현대자동차",
+    "companyAddress": "서울특별시 서초구 헌릉로 12 (양재동)",
+    "companyIndustry": "자동차 제조",
+    "companyTel": "02-3464-1114",
+    "companyEmail": "contact@hyundai.com",
+    "joinApproved": true,
+    "startDate": "19671229"
+  },
+  "user4": {
+    "user_idx": 4,
+    "userId": "sk_hynix",
+    "userPw": "sk1234",
+    "userName": "이석희",
+    "businessNum": "126-81-03725",
+    "companyName": "SK하이닉스",
+    "companyAddress": "경기도 이천시 부발읍 경충대로 2091",
+    "companyIndustry": "반도체 제조",
+    "companyTel": "031-630-4114",
+    "companyEmail": "contact@skhynix.com",
+    "joinApproved": true,
+    "startDate": "19830302"
+  },
+  "user5": {
+    "user_idx": 5,
+    "userId": "naver_inc",
+    "userPw": "naver1234",
+    "userName": "최수연",
+    "businessNum": "220-81-62517",
+    "companyName": "네이버",
+    "companyAddress": "경기도 성남시 분당구 불정로 6 (정자동)",
+    "companyIndustry": "인터넷 서비스",
+    "companyTel": "1588-3830",
+    "companyEmail": "contact@navercorp.com",
+    "joinApproved": false,
+    "startDate": "19990602"
+  }
+} 
